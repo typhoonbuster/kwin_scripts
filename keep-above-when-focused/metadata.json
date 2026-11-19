@@ -1,0 +1,20 @@
+{
+    "KPackageStructure": "KWin/Script",
+    "KPlugin": {
+        "Authors": [
+            {
+                "Name": "typhoonbuster"
+            }
+        ],
+        "Description": "Keeps chosen windows above panels only while they have focus, so Alt+Tab keeps working",
+        "Icon": "window-keep-above",
+        "Id": "keep-above-when-focused",
+        "License": "GPL-2.0-only",
+        "Name": "Keep Above When Focused",
+        "Version": "1.0",
+        "Website": "https://github.com/typhoonbuster/kwin_scripts"
+    },
+    "X-KDE-ConfigModule": "kwin/effects/configs/kcm_kwin4_genericscripted",
+    "X-Plasma-API": "javascript",
+    "X-Plasma-MainScript": "code/main.js"
+}

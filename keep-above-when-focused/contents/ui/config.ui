@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>KeepAboveWhenFocusedConfigForm</class>
+ <widget class="QWidget" name="KeepAboveWhenFocusedConfigForm">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>420</width>
+    <height>120</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Keep Above When Focused</string>
+  </property>
+  <layout class="QFormLayout" name="formLayout">
+   <item row="0" column="0">
+    <widget class="QLabel" name="windowClassesLabel">
+     <property name="text">
+      <string>Window classes (comma-separated):</string>
+     </property>
+     <property name="buddy">
+      <cstring>kcfg_WindowClasses</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QLineEdit" name="kcfg_WindowClasses">
+     <property name="placeholderText">
+      <string>Comma-separated list, e.g. gamescope, mpv</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QCheckBox" name="kcfg_ExactMatch">
+     <property name="text">
+      <string>Match the whole window class (otherwise any part of it matches)</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0" colspan="2">
+    <widget class="QLabel" name="hintLabel">
+     <property name="text">
+      <string>Separate several classes with commas, for example: gamescope, mpv, steam_app_
+Matching windows stay above panels and other windows only while they have focus. To find a window's class, use "Detect Window Properties" in System Settings → Window Management → Window Rules.</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
