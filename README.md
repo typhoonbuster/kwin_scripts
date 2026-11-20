@@ -4,7 +4,7 @@ Small KWin scripts for KDE Plasma 6.
 
 | Script | Description |
 |---|---|
-| [Keep Above When Focused](keep-above-when-focused/) | Keeps chosen windows (by window class) above panels only while they have focus, so Alt+Tab keeps working. |
+| [Keep Above When Focused](keep-above-when-focused/) | Keeps a window above panels only while it has focus, so Alt+Tab keeps working. Applies to all windows, or only to chosen window classes. |
 
 ## Installation
 

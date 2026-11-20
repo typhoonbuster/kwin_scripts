@@ -5,6 +5,19 @@
       http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
   <kcfgfile name=""/>
   <group name="">
+    <entry name="Mode" type="Enum">
+      <label>Which windows to keep above while focused</label>
+      <choices>
+        <choice name="AllWindows">
+          <label>All windows</label>
+        </choice>
+        <choice name="WindowClasses">
+          <label>Only the windows whose class is listed</label>
+        </choice>
+      </choices>
+      <!-- Index of WindowClasses: older KConfig versions only read a number here. -->
+      <default>1</default>
+    </entry>
     <entry name="WindowClasses" type="String">
       <label>Comma-separated list of window classes to keep above while focused</label>
       <default>gamescope</default>
