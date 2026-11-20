@@ -18,6 +18,10 @@ kpackagetool6 --type=KWin/Script -i keep-above-when-focused
 
 Then enable it in System Settings → Window Management → KWin Scripts. To update an installed script, use `-u` instead of `-i`.
 
+## Changing settings
+
+KWin does not pass new settings to a running script. After changing a script's settings, turn the script off and on again in System Settings → Window Management → KWin Scripts (click Apply each time), or log in again.
+
 ## Packaging
 
 A `.kwinscript` file is a zip archive of a script folder's contents:
