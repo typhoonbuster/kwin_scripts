@@ -5,9 +5,13 @@
  * they have focus. As soon as another window is activated (Alt+Tab, a
  * click...), the window goes back to the normal stacking layer.
  *
+ * Two modes: every window matches, or only the windows whose class is in
+ * a list match (the default).
+ *
  * SPDX-License-Identifier: GPL-2.0-only
  */
 
+let allWindows = false;
 let windowClasses = [];
 let exactMatch = false;
 
@@ -16,6 +20,9 @@ let exactMatch = false;
 let raisedWindow = null;
 
 function loadConfig() {
+    // The settings page stores the name of the chosen mode.
+    allWindows = String(readConfig("Mode", "WindowClasses")).toLowerCase() === "allwindows";
+
     windowClasses = String(readConfig("WindowClasses", "gamescope"))
         .split(",")
         .map(function (entry) { return entry.trim().toLowerCase(); })
@@ -31,10 +38,7 @@ function windowIds(window) {
         .filter(function (value) { return value.length > 0; });
 }
 
-function matches(window) {
-    if (!window || !window.normalWindow || windowClasses.length === 0) {
-        return false;
-    }
+function classMatches(window) {
     const ids = windowIds(window);
     return windowClasses.some(function (pattern) {
         return ids.some(function (id) {
@@ -43,27 +47,67 @@ function matches(window) {
     });
 }
 
-function release() {
+function matches(window) {
+    // Turning "keep above" on turns "keep below" off, so windows kept
+    // below are left alone.
+    if (!window || !window.normalWindow || window.keepBelow) {
+        return false;
+    }
+    return allWindows || classMatches(window);
+}
+
+// Whether window is a dialog of parent, directly or through other dialogs.
+// The depth limit guards against a loop in the chain.
+function isDialogOf(window, parent) {
+    let current = window.transientFor;
+    for (let depth = 0; current && depth < 16; depth++) {
+        if (current === parent) {
+            return true;
+        }
+        current = current.transientFor;
+    }
+    return false;
+}
+
+// Stops tracking the raised window without touching it. Connected to its
+// keepAboveChanged signal: if the user or the application changes
+// "keep above" on it, their choice is kept.
+function forget() {
     if (raisedWindow) {
-        raisedWindow.keepAbove = false;
+        raisedWindow.keepAboveChanged.disconnect(forget);
         raisedWindow = null;
     }
 }
 
+function raise(window) {
+    window.keepAbove = true;
+    raisedWindow = window;
+    window.keepAboveChanged.connect(forget);
+}
+
+function release() {
+    const window = raisedWindow;
+    forget();
+    if (window) {
+        window.keepAbove = false;
+    }
+}
+
 function onWindowActivated(window) {
-    if (window && window === raisedWindow) {
+    // KWin keeps dialogs above their parent window, so the raised window
+    // stays raised while one of its dialogs has focus.
+    if (window && raisedWindow && (window === raisedWindow || isDialogOf(window, raisedWindow))) {
         return;
     }
     release();
     if (matches(window) && !window.keepAbove) {
-        window.keepAbove = true;
-        raisedWindow = window;
+        raise(window);
     }
 }
 
 function onWindowRemoved(window) {
     if (window === raisedWindow) {
-        raisedWindow = null;
+        forget();
     }
 }
 

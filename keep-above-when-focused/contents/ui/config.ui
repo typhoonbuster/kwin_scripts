@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>420</width>
-    <height>120</height>
+    <height>180</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,6 +15,53 @@
   </property>
   <layout class="QFormLayout" name="formLayout">
    <item row="0" column="0">
+    <widget class="QLabel" name="modeLabel">
+     <property name="text">
+      <string>Apply to:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <!-- The index of the checked radio button is the Mode setting: keep the
+         buttons in the same order as the choices in main.xml. -->
+    <widget class="QGroupBox" name="kcfg_Mode">
+     <property name="flat">
+      <bool>true</bool>
+     </property>
+     <layout class="QVBoxLayout" name="modeLayout">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QRadioButton" name="allWindowsMode">
+        <property name="text">
+         <string>All windows</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="windowClassesMode">
+        <property name="text">
+         <string>Only the windows whose class is listed below</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
     <widget class="QLabel" name="windowClassesLabel">
      <property name="text">
       <string>Window classes (comma-separated):</string>
@@ -24,25 +71,35 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="1">
+   <item row="1" column="1">
     <widget class="QLineEdit" name="kcfg_WindowClasses">
      <property name="placeholderText">
       <string>Comma-separated list, e.g. gamescope, mpv</string>
      </property>
     </widget>
    </item>
-   <item row="1" column="1">
+   <item row="2" column="1">
     <widget class="QCheckBox" name="kcfg_ExactMatch">
      <property name="text">
       <string>Match the whole window class (otherwise any part of it matches)</string>
      </property>
     </widget>
    </item>
-   <item row="2" column="0" colspan="2">
+   <item row="3" column="0" colspan="2">
     <widget class="QLabel" name="hintLabel">
      <property name="text">
       <string>Separate several classes with commas, for example: gamescope, mpv, steam_app_
-Matching windows stay above panels and other windows only while they have focus. To find a window's class, use "Detect Window Properties" in System Settings → Window Management → Window Rules.</string>
+A window stays above panels and other windows only while it has focus. To find a window's class, use "Detect Window Properties" in System Settings → Window Management → Window Rules.</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0" colspan="2">
+    <widget class="QLabel" name="applyNoteLabel">
+     <property name="text">
+      <string>KWin does not pass new settings to a running script: after saving, turn the script off and on again in KWin Scripts (click Apply each time), or log in again.</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -52,5 +109,24 @@ Matching windows stay above panels and other windows only while they have focus.
   </layout>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>windowClassesMode</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>windowClassesLabel</receiver>
+   <slot>setEnabled(bool)</slot>
+  </connection>
+  <connection>
+   <sender>windowClassesMode</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>kcfg_WindowClasses</receiver>
+   <slot>setEnabled(bool)</slot>
+  </connection>
+  <connection>
+   <sender>windowClassesMode</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>kcfg_ExactMatch</receiver>
+   <slot>setEnabled(bool)</slot>
+  </connection>
+ </connections>
 </ui>
